@@ -3,7 +3,7 @@ const decks_take = 100;
 const listData = [];
 const collection = [];
 const _token = $('meta[name="csrf-token"]').attr('content');
-const apiUrl = 'https://p52export.vercel.app/'
+const apiUrl = 'https://p52export.vercel.app/api'
 
 const downloadFile = () => {
   const file = new Blob([JSON.stringify(collection)], { type: 'application/json' });
@@ -56,7 +56,7 @@ const fetchPage = () => {
     if ($decks.length === decks_take) {
       return fetchPage();
     }
-    fetch(`${apiUrl}?id[]=${ids.join('&id[]=')}`).then((res) => res.json()).then((decks) => {
+    fetch(`${apiUrl}/decks?id[]=${ids.join('&id[]=')}`).then((res) => res.json()).then((decks) => {
       decks.forEach((deck) => {
         const d = listData.find(({ id }) => `${deck.number}` === id)
         if (!d) { return }

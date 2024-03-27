@@ -1,10 +1,12 @@
 let decks_skip = 0;
 const decks_take = 100;
 const listData = [];
+const collection = [];
 const _token = $('meta[name="csrf-token"]').attr('content');
+const apiUrl = 'https://p52export.vercel.app/'
 
 const downloadFile = () => {
-  const file = new Blob([JSON.stringify(listData)], { type: 'application/json' });
+  const file = new Blob([JSON.stringify(collection)], { type: 'application/json' });
 
   const a = document.createElement('a');
   const url = URL.createObjectURL(file);
@@ -35,6 +37,7 @@ const fetchPage = () => {
   }).then((res) => res.text()).then((data) => {
     const $dom = $(`<div>${data}</div>`);
     const $decks = $dom.find('.lightbox-items');
+    const ids = []
     if ($decks.length) {
       $decks.each((_, el) => {
         const $el = $(el);
@@ -46,12 +49,20 @@ const fetchPage = () => {
           tradelist,
           note: $el.find('textarea').val(),
         }
+        ids.push(deck.id)
         listData.push(deck);
       });
     }
     if ($decks.length === decks_take) {
       return fetchPage();
     }
+    fetch(`${apiUrl}?id[]=${ids.join('&id[]=')}`).then((res) => res.json()).then((decks) => {
+      decks.forEach((deck) => {
+        const d = listData.find(({ id }) => `${deck.number}` === id)
+        if (!d) { return }
+        collection.push({ ...deck, ...d })
+      })
+    })
     $p.css({ background: '#33cc33' }).text('Deck info downloaded')
     downloadFile();
     $p.delay(5000).fadeOut(400)

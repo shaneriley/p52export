@@ -1,0 +1,16 @@
+{
+  "name": "p52export",
+  "version": "1.0.0",
+  "description": "Portfolio52 collection exporter",
+  "main": "index.js",
+  "repository": "git@github.com:shaneriley/p52export.git",
+  "author": "Shane Riley <shane@shaneriley.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

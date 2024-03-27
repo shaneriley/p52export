@@ -62,10 +62,10 @@ const fetchPage = () => {
         if (!d) { return }
         collection.push({ ...deck, ...d })
       })
+      $p.css({ background: '#33cc33' }).text('Deck info downloaded')
+      downloadFile();
+      $p.delay(5000).fadeOut(400)
     })
-    $p.css({ background: '#33cc33' }).text('Deck info downloaded')
-    downloadFile();
-    $p.delay(5000).fadeOut(400)
   })
 }
 
